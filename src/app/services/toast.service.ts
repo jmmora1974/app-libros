@@ -11,7 +11,7 @@ export class ToastService {
     public toastController: ToastController
   ) { }
 
-  async presentToast(header: string, message: string, position: any, color: string, duration: number, icon?: string) {
+  async presentToast(header: string, message: string, position: any, color: string, duration: number=1000, icon?: string) {
 
     if (!icon) {
       switch (color) {

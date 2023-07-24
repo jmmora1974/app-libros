@@ -32,7 +32,7 @@ export class AvatarService {
     })
     
   }
-
+  //Obtiene de la bdd el perfil de usuario segun el current user
   getUserProfile() {
     const user = this.auth.currentUser;
 
@@ -40,6 +40,7 @@ export class AvatarService {
     return docData(userDocRef);
   }
 
+  //Sube una foto de camara o archivo al storage
   async uploadImage(cameraFile: Photo) {
     const user = this.auth.currentUser;
     const path = `usuaris/${this.userLogat!.id}/profile.png`;

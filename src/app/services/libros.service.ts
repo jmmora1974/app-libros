@@ -22,6 +22,7 @@ export class LibrosService {
   private librospropietari=new BehaviorSubject<ILibro[]>([]);
 	librospropietari$=this.librospropietari.asObservable();
   private misLibros:ILibro[]=[];
+
   constructor(
     private authService: AuthService,
     private firestore: Firestore,
@@ -34,7 +35,7 @@ export class LibrosService {
     
       
   }
-  // Crea un nuevo libro
+  // Crea un nuevo libroy lo almace
   createLibro(libro: ILibro) {
     
     const librosRef = collection(this.firestore, 'libros');
@@ -52,19 +53,13 @@ export class LibrosService {
   }
 
    // Obtiene los libros del propietario.
-
-
   async getLibrobyPropietario(prop: string){
-    //this.misLibros=[];
+
         this.libros$.forEach((elements)=>{
         this.misLibros=[];
-          //console.log (elements.length)
           for (let x=0;x<elements.length;x++){
-          //  console.log(elements[x])
-           // console.log(elements[x].propietario==prop)
             if (elements[x].propietario==prop){
               this.misLibros.push(elements[x])
-             // console.log(this.misLibros)
             }
           }
           if (this.misLibros) { 
@@ -158,7 +153,7 @@ export class LibrosService {
 
     
   }
-
+  //Gestiona la compra del libro.
   comprarLibro(libro:ILibro){
     console.log(libro.propietario, this.authService.getUserId() )
     if (libro.propietario==this.authService.getUserId()){
@@ -179,15 +174,30 @@ export class LibrosService {
         comprador: this.authService.getUserId(),
         fechaTransaccion: Date.now()
       }
+      this.toast.presentToast('Compra realizada','Libros comprado con exito','bottom','success', 3000,'chart');
+     
       const libronuevo=addDoc(librosRef, libroVendido);
       this.deleteLibro(libro)
       return libronuevo;
     } else {
+      this.toast.presentToast('Compra no realizada','La compra del libro no ha sido satisfactoria, lago ha ocurrido mal','fix','danger', 2000,'danger');
+     
       return 'Compra no aprobada'
     }
   }
 
+  //Comprueba si la compra/pago se ha dealizado..se ha generado un mock para realizar pruebas.
   aprobarCompra (): boolean{
+
+   // Returns a random integer from 0 to 9:
+   let unNumero=Math.floor(Math.random() * 5);
+   console.log(unNumero)
+   //Generamos un mock para simular compras fallidas. La probabilidad puede cambiar según queremos.
+   if (unNumero==3) {
+    
     return true;
+   }else {
+    return false;
+  }
   }
 }

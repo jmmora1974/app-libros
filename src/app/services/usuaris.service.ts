@@ -20,11 +20,12 @@ export class UsuarisService {
   constructor(
     private firestore: Firestore, private authService: AuthService
     ) { 
+      if(authService.getUserId()){
       this.getUser().then ((usu)=>{
         console.log (usu);
         this.userLogat.next(usu);
         
-      })
+      })}
     }
 
   async getUser(): Promise<IUser> {

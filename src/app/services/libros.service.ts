@@ -3,8 +3,10 @@ import { ILibro } from '../models/ilibro';
 import { AuthService } from './auth.service';
 import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, getDocs, query, updateDoc, where, getFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, identity } from 'rxjs';
-import { User } from '@angular/fire/auth';
+import { User, UserCredential } from '@angular/fire/auth';
 import { getDownloadURL } from '@angular/fire/storage';
+import { PhotoService } from './photo.service';
+import { ToastService } from './toast.service';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ import { getDownloadURL } from '@angular/fire/storage';
 })
 export class LibrosService {
 
-  usuariaLogat: User | undefined;
+  usuariLogat!: User ;
   //libros:ILibro[]=[];
   private libros=new BehaviorSubject<ILibro[]>([]);
   libros$=this.libros.asObservable();
@@ -22,10 +24,13 @@ export class LibrosService {
   private misLibros:ILibro[]=[];
   constructor(
     private authService: AuthService,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private photoService: PhotoService,
+    private toast:ToastService
     ) {
      
-     this.libros$=this.getLibros();
+    this.libros$=this.getLibros();
+    this.usuariLogat= this.authService.userLogged()!;
     
       
   }
@@ -133,13 +138,56 @@ export class LibrosService {
       categoria: libro.categoria,
       descripcion: libro.descripcion,
       valoracion: libro.valoracion,
-      precio: libro.precio   
+      precio: libro.precio ,
+      imageUrl:libro.imageUrl
     });
   }
   // Borra el libro
   deleteLibro(libro: ILibro) {
-    console.log(libro)
-    const vacancaDocRef = doc(this.firestore, `libros/${libro.id}`);
-    return deleteDoc(vacancaDocRef);
+    const libroDocRef = doc(this.firestore, `libros/${libro.id}`);
+    deleteDoc(libroDocRef);
+    if (libro.imageUrl) {
+    
+          const restBorrar=this.photoService.deleteImage(libro.imageUrl);
+        
+          console.log (restBorrar)
+        
+        
+    }
+
+
+    
+  }
+
+  comprarLibro(libro:ILibro){
+    console.log(libro.propietario, this.authService.getUserId() )
+    if (libro.propietario==this.authService.getUserId()){
+      this.toast.presentToast('Compra no permita','No puedes comprar tus libros','fix','danger', 2000,'danger');
+      return 'Compra no permita. No puedes comprar tus libros';
+    }
+
+    const compraAutorizada = this.aprobarCompra ();
+
+    if (compraAutorizada){
+      const librosRef = collection(this.firestore, 'transacciones');
+      let libroVendido={
+        titulo: libro.titulo,
+        categoria: libro.categoria,
+        descripcion: libro.descripcion,
+        precio: libro.precio,
+        vendedor: libro.propietario,
+        comprador: this.authService.getUserId(),
+        fechaTransaccion: Date.now()
+      }
+      const libronuevo=addDoc(librosRef, libroVendido);
+      this.deleteLibro(libro)
+      return libronuevo;
+    } else {
+      return 'Compra no aprobada'
+    }
+  }
+
+  aprobarCompra (): boolean{
+    return true;
   }
 }

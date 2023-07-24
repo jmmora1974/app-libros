@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Modificación del libro</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true"[disabled]="!formLibro.dirty" >Confirmar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-form [formGroup]="formLibro" >
+    <ion-item>
+        <div class="preview">
+          <ion-avatar (click)="changeImage()" horizontal="center">
+            <img *ngIf="nuevoLibro?.imageUrl; else placeholder_avatar;"  [src]="nuevoLibro.imageUrl"  />
+      
+            <ng-template #placeholder_avatar>
+              <div class="fallback">
+                <p>Select imagen del libro</p>
+              </div>
+            </ng-template>
+            
+          </ion-avatar>
+          <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+            <ion-fab-button (click)="changeImage()" >
+              <ion-icon name="camera"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </div> 
+        <ion-item disabled="true" class="ion-hide">
+          <ion-label position="floating"></ion-label>
+          <ion-input formControlName="imageUrl" type="string" required value="{{nuevoLibro.imageUrl}}">
+          </ion-input>
+        </ion-item>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Titulo</ion-label>
+      <ion-input formControlName="titulo" type="text" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input formControlName="categoria" type="text" required>
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripcion</ion-label>
+      <ion-input formControlName="descripcion" type="text" >
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Valoracion</ion-label>
+      <ion-range  formControlName="valoracion"  aria-label="Range with ticks" [ticks]="true" [snaps]="true" [min]="0" [max]="5"></ion-range>
+    
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input formControlName="precio" type="number" required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item disabled="true" class="ion-hide">
+      <ion-label position="floating">Propietario</ion-label>
+      <ion-input formControlName="propietario" type="string" required value="{{nuevoLibro.propietario}}">
+      </ion-input>
+    </ion-item>
+    
+     
+        <ion-item>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button  [disabled]="!formLibro.dirty"  type="button" color="primary" shape="full" expand="block" (click)="confirm()">Actualizar libro</ion-button>
+      </ion-col>
+    </ion-row>
+    
+  </ion-form>
+</ion-content>

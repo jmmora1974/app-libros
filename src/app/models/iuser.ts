@@ -21,7 +21,3 @@ export interface IUserAvatar {
     storageBase64: string;
 }
 
-export interface IUserPhoto {
-    filepath: string;
-    webviewPath?: string;
-}

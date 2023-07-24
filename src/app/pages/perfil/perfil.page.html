@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-header collapse="condense">
+  <ion-toolbar>
+    <ion-title size="large">perfilw</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-form [formGroup]="formperfil"  *ngIf="userLogat">  
+    <div class="preview">
+      <ion-avatar (click)="changeImage()">
+        <img *ngIf="userLogat?.imageUrl; else placeholder_avatar;"  [src]="userLogat.imageUrl"  />
+  
+        <ng-template #placeholder_avatar>
+          <div class="fallback">
+            <p>Select avatar</p>
+          </div>
+        </ng-template>
+      </ion-avatar>
+    </div>  
+    <ion-item lines="full" class="item-has-focus ion-valid " >
+      <label slot="start">Nom: </label>
+      <ion-input type="nom" placeholder="Nom" formControlName="nom" ></ion-input>
+     
+    </ion-item> 
+    <ion-item lines="full" class="item-has-focus ion-touched" >
+      <label slot="start">Cognom: </label>
+      <ion-input type="cognom" placeholder="Cognom" formControlName="cognom"></ion-input>  
+    </ion-item>
+    <ion-item disabled="true" class="ion-hide">
+      <ion-label position="floating"></ion-label>
+      <ion-input formControlName="imageUrl" type="string" required value="{{userLogat.imageUrl}}">
+      </ion-input>
+    </ion-item>
+    <ion-item disabled="true" class="ion-hide">
+      <ion-label position="floating"></ion-label>
+      <ion-input formControlName="tokenPush" type="string" required value="{{userLogat.tokenPush}}">
+      </ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="button" [disabled]="!formperfil.dirty" (click)="actualizaPerfil()">Actualizar perfil</ion-button>
+    <ion-button expand="full" type="button" (click)="returnHome()">Volver a homer</ion-button>
+
+  </ion-form>
+  
+  <ion-list>
+    <ion-list-header>
+      <ion-title><h2>Listado de mis libros</h2></ion-title>
+    </ion-list-header>
+    <ion-item *ngFor="let libro of misLibros$|async">
+
+      <ion-card>
+        <ion-img alt="Foto libro" src="{{libro.imageUrl}}" />
+        <ion-card-header>
+          <ion-card-title>{{libro.titulo}}</ion-card-title>
+          <ion-card-subtitle> {{libro.categoria}}</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          {{libro.valoracion}} - {{libro.descripcion}}
+          <p>Precio: {{libro.precio}}<ion-icon name="coin"></ion-icon> </p>
+          <ion-button (click)="openModal(libro)"><ion-icon name="create-outline"></ion-icon></ion-button>
+          <ion-button (click)='deleteLibro(libro)'><ion-icon name="trash-outline"></ion-icon></ion-button>
+        </ion-card-content>
+      </ion-card>
+         
+    
+    </ion-item>
+  </ion-list>
+
+
+
+  <ion-list class="list-custom" lines="full" (click)="signOut()">
+    <ion-item color="primary" button detail=false>
+      <ion-icon slot="start" color="light" name="log-out"></ion-icon>
+      <ion-label color="light">
+        <h3>Sign out</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+

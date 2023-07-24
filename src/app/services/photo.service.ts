@@ -4,18 +4,19 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
-import { IUser, IUserPhoto } from '../models/iuser';
-import { Storage, getDownloadURL, ref, uploadBytesResumable,uploadString } from '@angular/fire/storage';
+import { IUser } from '../models/iuser';
+import { Storage, getDownloadURL, ref, uploadBytesResumable,uploadString,deleteObject} from '@angular/fire/storage';
 import { UsuarisService } from './usuaris.service';
 import {Auth} from '@angular/fire/auth';
 import { collection, doc,docData,DocumentData,DocumentReference,Firestore, getDocs, limit, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
+import { IUserPhoto } from '../models/ilibro';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
-
+userLogat$=this.usuarisService.userLogat$;
   public photos: IUserPhoto[] = [];
   private PHOTO_STORAGE: string = '';
   private platform: Platform;
@@ -116,7 +117,7 @@ export class PhotoService {
 
   async uploadImage(cameraFile: Photo) {
     const user = this.auth.currentUser;
-    const path = `usuaris/${user!.uid}/profile.png`;
+    const path = `usuaris/${this.user.id}/profile.png`;
     const storageRef = ref(this.storage, path);
 
     try {
@@ -139,4 +140,49 @@ export class PhotoService {
     }
   }
 
+  async uploadImageLibro(cameraFile: Photo) {
+    const user = this.auth.currentUser;
+    const path = `libros/${user!.uid}/${Date.now()}.jpg`;
+    const storageRef = ref(this.storage, path);
+
+    try {
+      await uploadString(storageRef, cameraFile.base64String!, 'base64');
+
+      const imageUrl = await getDownloadURL(storageRef);
+      /*
+      const q = query(collection(this.firestore, "users"), where("id", "==", this.authService.getUserId()), limit(1));
+      const querySnapshot = await getDocs(q);
+      const userDocRef1 = querySnapshot.docs.map(doc => doc);
+      console.log(userDocRef1[0].ref)
+*
+      const userDocRef = doc(this.firestore, `users/${this.user!.id}`);
+      await updateDoc(userDocRef1[0].ref, {
+        imageUrl,
+      });
+      */
+
+      return imageUrl;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  deleteImage (urlImage:string){
+        // Create a reference to the file to delete
+        
+      
+      const desertRef = ref(this.storage, urlImage);
+      console.log (desertRef)
+    if(desertRef){
+      // Delete the file
+      deleteObject(desertRef).then(() => {
+        // File deleted successfully
+        
+        console.log('imagen borrada del storage')
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+       console.log('Error ', error)
+      });
+    }
+}
 }

@@ -10,7 +10,7 @@ import { AuthService } from '../app/services/auth.service';
 })
 export class AppComponent {
   isUserserLoggedIn$ = this.authService.loggedIn$;
-     
+  current_year: number = new Date().getFullYear();
   constructor(private router: Router, private authService:AuthService) {
   if(this.authService.userLogged()){
     this.isUserserLoggedIn$;

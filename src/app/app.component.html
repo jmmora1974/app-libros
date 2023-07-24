@@ -1,3 +1,12 @@
 <ion-app>
+  <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button (click)="goToHome()">
+      <ion-icon name="home" ></ion-icon>
+    </ion-button>
+    <ion-button slot="end" *ngIf="isUserserLoggedIn$|async" (click)="logOut()">Logout</ion-button>
+    <ion-button slot="end" *ngIf="!(isUserserLoggedIn$ | async)" (click)="logIn()">Login</ion-button>
+  </ion-toolbar>
+</ion-header>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

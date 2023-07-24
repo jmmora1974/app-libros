@@ -1,36 +1,51 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin  = ()=> redirectUnauthorizedTo(['login']);
+
 
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
     children: [
+      
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'home',
+        loadChildren: () => import('../pages/home/home.module').then(m => m.HomePageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'crearlibro',
+        loadChildren: () => import('../pages/crearlibro/crearlibro.module').then(m => m.CrearlibroPageModule),
+        ...canActivate(redirectUnauthorizedToLogin)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
-      },
+        path: 'perfil',
+        loadChildren: () => import('../pages/perfil/perfil.module').then(m => m.PerfilPageModule),
+        ...canActivate(redirectUnauthorizedToLogin)
+      }, 
       {
-        path: '',
-        redirectTo: '/tabs/tab1',
+        path: '**',
+        redirectTo: 'home',
         pathMatch: 'full'
-      }
+      },
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/home',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'crearlibro',
+    loadChildren: () => import('../pages/crearlibro/crearlibro.module').then(m => m.CrearlibroPageModule)
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('../pages/perfil/perfil.module').then(m => m.PerfilPageModule)
+  },
 ];
 
 @NgModule({

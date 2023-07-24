@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../app/services/auth.service';
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,26 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  isUserserLoggedIn$ = this.authService.loggedIn$;
+     
+  constructor(private router: Router, private authService:AuthService) {
+  if(this.authService.userLogged()){
+    this.isUserserLoggedIn$;
+   }
+  }
+  
+
+  goToHome(){
+    this.router.navigateByUrl ('/home',{replaceUrl: true});
+  }
+
+  logOut(){
+    this.authService.logout();
+    this.router.navigateByUrl ('/login',{replaceUrl: true});
+  }
+
+  logIn(){
+    this.router.navigateByUrl ('/login',{replaceUrl: true});
+  }
+  
 }

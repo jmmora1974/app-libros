@@ -14,4 +14,29 @@
   </ion-header>
 
   <app-explore-container name="Tab 2 page"></app-explore-container>
+    <h1>Perfil</h1>
+
+  <div *ngIf="userLogat">
+
+    <img [src]="userLogat.avatar.storagePath" />
+
+    <img [src]="userLogat.avatar.storageBase64">
+
+    <div class="avatar"></div>
+
+    <p>Nom: </p>{{userLogat.nom}}
+
+    <p>Cognom: </p>{{userLogat.cognom}}
+
+    <p>Naixament</p> lll
+
+    <p>Canviar password</p>
+
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="addPhotoToGallery()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

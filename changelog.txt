@@ -28,4 +28,8 @@ master :
 		- IUserPhoto: Interface para el uso de donde estan las fotos de usuario. No usado por el momento.
 	
 	
-	
+25/07/2023
+	Paginas:
+		-PerfilPage: Se agrega listado de libros vendidos y comprados.
+	Servicios:
+		-LibroService: Agregados metodos para obtener libros vendidos y comprados.

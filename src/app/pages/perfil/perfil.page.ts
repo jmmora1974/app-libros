@@ -12,6 +12,7 @@ import { UsuarisService } from 'src/app/services/usuaris.service';
 
 import { ModalLibroPage } from './modal-libro/modal-libro.page';
 import { ILibro } from 'src/app/models/ilibro';
+import { error } from 'console';
 
 
 @Component({
@@ -25,7 +26,10 @@ export class PerfilPage implements OnInit {
   profile: any;
   formperfil!: FormGroup;
   libros$=this.librosService.libros$;
-  misLibros$=this.librosService.librospropietari$
+  misLibros$=this.librosService.librospropietari$;
+  librosVendidos: ILibro[]=[];
+  librosVendidos$=this.librosService.librosVendidos$;
+  librosComprados: ILibro[]=[];
   message='Los cambios del libro son:'
   constructor( 
     private authService: AuthService,
@@ -49,24 +53,28 @@ export class PerfilPage implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().then ((usu)=>{
-      console.log (usu);
-      this.userLogat=usu;
-      
+     // console.log (usu);
+      this.userLogat=usu;   
     }).then(()=>
       this.librosService.getLibrobyPropietario(this.userLogat.id!).then ((lib)=>{
-        console.log(lib)
-        
-          this.formperfil = this.fb.group ({
+           this.formperfil = this.fb.group ({
             nom: [this.userLogat!.nom, [Validators.required]],
             cognom: [this.userLogat!.cognom,[Validators.required]],
             imageUrl:[this.userLogat!.imageUrl],
             tokenPush: [this.userLogat!.tokenPush]
-
+          }); 
+          this.librosService.getLibrobyComprador(this.userLogat.id!).then((data)=>{
+            this.librosComprados=data;
           });
-          console.log (this.userLogat)
+      
+          this.librosService.getLibrobyVendidos(this.userLogat.id!).then((data)=>{
+            this.librosVendidos=data;
+          });
 
-    })
-    )
+      })
+      .catch((error)=>{console.error})      
+    );
+   
   }
   ionViewWillEnter() {
     this.init();
@@ -91,6 +99,7 @@ export class PerfilPage implements OnInit {
     
   }
 
+  //Actualiza los datos del perfil y la foto del avatar.
   actualizaPerfil(){
     console.log(this.formperfil.value)
     const userP:IUser ={
@@ -103,7 +112,7 @@ export class PerfilPage implements OnInit {
    this.userService.updateUser(userP)
     
   }
-  
+  //Abre una ventana modal con el formulario de libro para realizar modificaciones o cambio de foto.
   async openModal(libro:ILibro) {
     const modal = await this.modalCtrl.create({
       component: ModalLibroPage,
@@ -117,16 +126,19 @@ export class PerfilPage implements OnInit {
       this.librosService.updateLibro(data)
     }
   }
+  //Borra el libro
   deleteLibro(libro:any){
     console.log (libro)
       this.librosService.deleteLibro(libro);
   }
   
+  //Añade fotos en la galeria de fotos del libro..//sin usar de momento
   addPhotoToGallery() {
     this.photoService.addNewToGallery().then(() => {
       this.init();
     });
   }
+
   get nom () {
     return this.formperfil.get('nom')?.value;
   }
@@ -134,6 +146,8 @@ export class PerfilPage implements OnInit {
     return this.formperfil.get('cognom');
   }
   
+  //Obtiene la lista de libros vendidos.
+
   // Sign out
   async signOut() {
     try {

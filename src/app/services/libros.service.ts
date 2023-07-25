@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { ILibro } from '../models/ilibro';
 import { AuthService } from './auth.service';
 import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, getDocs, query, updateDoc, where, getFirestore } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, identity } from 'rxjs';
-import { User, UserCredential } from '@angular/fire/auth';
+import { BehaviorSubject, Observable, identity, map } from 'rxjs';
+import { User, UserCredential, provideAuth } from '@angular/fire/auth';
 import { getDownloadURL } from '@angular/fire/storage';
 import { PhotoService } from './photo.service';
 import { ToastService } from './toast.service';
@@ -78,14 +78,23 @@ export class LibrosService {
   }
 
   //Obtiene la lista de libros por el propietario directamente de firebase.
-   async getLibrobyPropietario1(userProp: string):Promise<any> {
+  async getLibrobyPropietario1(userProp: string):Promise<any> {
     
     const q = query(collection(this.firestore, 'libros'), where('propietario', '==', userProp));
     const querySnapshot = await getDocs(q);
      return querySnapshot.docs.map(doc => doc.data() as ILibro);
-     
-
   }
+  
+  //Obtiene la lista de libros por el propietario del observable y aplica filtro.
+  async getLibrobyPropietario2(userProp: string): Promise<Observable<ILibro | null>> {
+    return this.libros$.pipe(
+      map(
+        (libros:ILibro[])=>
+            libros.find((libro:ILibro)=>libro.propietario==userProp)||null
+      )
+    )
+  }
+  
   
 
     // Obtiene los libros vendidos directamente de firebase.

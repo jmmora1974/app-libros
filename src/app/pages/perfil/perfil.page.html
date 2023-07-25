@@ -21,7 +21,6 @@
     <div class="preview">
       <ion-avatar (click)="changeImage()">
         <img *ngIf="userLogat?.imageUrl; else placeholder_avatar;"  [src]="userLogat.imageUrl"  />
-  
         <ng-template #placeholder_avatar>
           <div class="fallback">
             <p>Select avatar</p>
@@ -79,6 +78,33 @@
     </ion-item>
   </ion-list>
 
+  <ion-title> Listado de libros vendidos</ion-title>
+
+  <ion-card *ngFor="let libroVend of librosVendidos$|async">
+    <ion-card-header>
+        <ion-card-title >{{libroVend.titulo}}</ion-card-title>
+        <ion-card-subtitle>{{libroVend.categoria}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{libroVend.valoracion}} - {{libroVend.descripcion}}
+      <p>Precio: {{libroVend.precio}}<ion-icon name="coin"></ion-icon> </p>
+      
+    </ion-card-content>
+  </ion-card>
+
+  <ion-title> Listado de libros comprados</ion-title>
+
+<ion-card *ngFor="let libroComp of librosComprados">
+  <ion-card-header>
+      <ion-card-title >{{libroComp.titulo}}</ion-card-title>
+      <ion-card-subtitle>{{libroComp.categoria}}</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    {{libroComp.valoracion}} - {{libroComp.descripcion}}
+    <p>Precio: {{libroComp.precio}}<ion-icon name="coin"></ion-icon> </p>
+    
+  </ion-card-content>
+</ion-card>
 
 
   <ion-list class="list-custom" lines="full" (click)="signOut()">

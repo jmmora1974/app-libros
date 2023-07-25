@@ -23,6 +23,10 @@ export class LibrosService {
 	librospropietari$=this.librospropietari.asObservable();
   private misLibros:ILibro[]=[];
 
+  private librosVendidos=new BehaviorSubject<ILibro[]>([]);
+	librosVendidos$=this.librosVendidos.asObservable();
+  
+
   constructor(
     private authService: AuthService,
     private firestore: Firestore,
@@ -32,8 +36,11 @@ export class LibrosService {
      
     this.libros$=this.getLibros();
     this.usuariLogat= this.authService.userLogged()!;
-    
-      
+    if (this.usuariLogat){
+      this.getLibrobyVendidos(this.usuariLogat.uid).then((data)=>{
+        this.librosVendidos.next(data)
+      })
+    } 
   }
   // Crea un nuevo libroy lo almace
   createLibro(libro: ILibro) {
@@ -54,7 +61,6 @@ export class LibrosService {
 
    // Obtiene los libros del propietario.
   async getLibrobyPropietario(prop: string){
-
         this.libros$.forEach((elements)=>{
         this.misLibros=[];
           for (let x=0;x<elements.length;x++){
@@ -71,49 +77,53 @@ export class LibrosService {
          
   }
 
+  //Obtiene la lista de libros por el propietario directamente de firebase.
    async getLibrobyPropietario1(userProp: string):Promise<any> {
     
     const q = query(collection(this.firestore, 'libros'), where('propietario', '==', userProp));
     const querySnapshot = await getDocs(q);
-     let libros2 =  querySnapshot.docs.map(doc => doc.data() as ILibro);
-   
-   //
-    console.log(JSON.stringify(libros2));
-    if (libros2) { return  libros2;}
-    else {
-      setTimeout(() =>{
-      //  console.log(JSON.stringify(libros2));
-        return libros2;
-      },2000)
-      return libros2
-     }
-   // return  querySnapshot.docs.map(doc => doc.data() as ILibro);
+     return querySnapshot.docs.map(doc => doc.data() as ILibro);
+     
+
   }
   
-  // Obtiene los libros comprados.
-  async getLibrobyComprador1(userComp: string) {
-    const q = query(collection(this.firestore, 'libros'), where('comprador`', '==', userComp));
+
+    // Obtiene los libros vendidos directamente de firebase.
+    async getLibrobyVendidos(userProp: string) {
+      const q = query(collection(this.firestore, 'transacciones'), where('vendedor', '==', userProp));
+      const querySnapshot = await getDocs(q);
+      let librosV = querySnapshot.docs.map(doc => doc.data() as ILibro);
+      console.log(librosV);
+      this.librosVendidos.next(librosV)
+      return librosV;
+    }
+
+
+
+  // Obtiene los libros comprados directamente de firebase.
+  async getLibrobyComprador(userComp: string) {
+    const q = query(collection(this.firestore, 'transacciones'), where('comprador', '==', userComp));
     const querySnapshot = await getDocs(q);
     let libros = querySnapshot.docs.map(doc => doc.data() as ILibro);
     return libros;
   }
 
   // Obtiene los libros comprados.
-  async getLibrobyComprador(userComp: string) {
-/*
-    return this.getLibros().subscribe({
-      next: 
-      (data:ILibro[])=> {
-       return data;
+  async getLibrobyComprador1(userComp: string) {
+  /*
+      return this.getLibros().subscribe({
+        next: 
+        (data:ILibro[])=> {
+        return data;
 
-      },
-      error: (error) => {
-      // Handle errors
-      console.error(error);
-      return error;
-      }
-    });
-     */
+        },
+        error: (error) => {
+        // Handle errors
+        console.error(error);
+        return error;
+        }
+      });
+      */
   }
 
 

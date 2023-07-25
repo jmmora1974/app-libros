@@ -1,0 +1,35 @@
+#changelog  of app-libros by jmmora
+
+23/07/2023
+master : 
+	Paginas:
+		- LoginPage: Pagina para login. Completed
+		- SignupPage: pagina de registro de usuario. Completed
+		- Password-ResetPage: Recordarorio de contraseñas. Pending funcionamiento.
+		- HomePage: Muestra listado de libros a la venta. Pending de incoporar filtros y mapa.
+		- crearLibroPage: Formulario de creación de libros. 80% Implementado formulario de datos. avatar  Pendiente incorporar galeria de fotos y geolocalicación.
+		- PerfilPage: Formulario con los datos del perfil del usuario almacenado en firebase y storage. Pendiente geolocalización.
+					  Muestra listado de los propios libros y permite modificar o eliminar.Pendiente geolocalización.
+					  Pendiente mostrar libros comprados y vendidos. 
+		-ModalLibroPage: Pagina modal para modificación de libro y subida de fotos a la galeria. Llamada desde el perfil. Pendiente de mapa y galeria.
+	Servicios:
+		-AuthService: Servicio de autenticación de de usuario. Metodos: register, login, getUserId, userLogged , Logout.
+		-avatarService: Deprecated...Servicio para gestionar los avatar de usuario y libros. No usado, incorporado en photoservice.
+		- helperService: Pending.. no usado 
+		-LibroService: Servicio para el crud de libros. Completed.
+		- PhotoService: Sevicio para gestión de fotos con el storage. Gestiona potos del perfil de usuario y fotos de libros. Pendiente gestion de libros comprados.
+		- ToastService. Secicio de alertas. Completed.
+		
+	Interfaces:
+		- IEmailPwd: Usada para la creación y autenticación del usuario.
+		- IUser:  Interface con los datos necesarios para el perfil del usuario.
+		- IUserAvatar: Interface para almacenar de 2 tipos las fotos del usuario.
+		- ILibro: Interface con los datos necesarios para los libros.
+		- IUserPhoto: Interface para el uso de donde estan las fotos de usuario. No usado por el momento.
+	
+	
+25/07/2023
+	Paginas:
+		-PerfilPage: Se agrega listado de libros vendidos y comprados.
+	Servicios:
+		-LibroService: Agregados metodos para obtener libros vendidos y comprados.

@@ -1,0 +1,87 @@
+ionic start app-libros2 tabs --type=angular --capacitor
+cd app-libros2
+npm install @capacitor/splash-screen
+ionic build
+npx cordova-res android -skip-config -copy
+
+cd resources\android\icon
+copy drawable-mdpi-icon.png mdpi-foreground.png
+copy drawable-hdpi-icon.png hdpi-foreground.png
+copy drawable-xhdpi-icon.png xhdpi-foreground.png
+copy drawable-xxhdpi-icon.png xxhdpi-foreground.png
+copy drawable-xxxhdpi-icon.png xxxhdpi-foreground.png
+cd.. cd.. cd..
+
+conecta mobil usb
+
+npx cap sync
+ionic capacitor run android -l --external
+
+seguir pasos 
+https://medium.com/@simonescigliuzzi/how-to-add-icon-and-splash-screen-to-your-ionic-app-ccec37240934
+
+
+------
+creamos la bdd en firebase.
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAlWPPBE2uLIzSobZ40uQvBIiIvK9cfVlE",
+  authDomain: "subastas-8f555.firebaseapp.com",
+  projectId: "subastas-8f555",
+  storageBucket: "subastas-8f555.appspot.com",
+  messagingSenderId: "953433927619",
+  appId: "1:953433927619:web:776bb4cd9a031c53519776"
+};
+
+// Initialize Firebase
+NO const app = initializeApp(firebaseConfig);
+
+NO npm install firebase
+ng add @angular/fire
+
+ionic generate page pages/home
+ionic generate page pages/login
+ionic generate page pages/signup
+ionic generate page pages/password-reset
+ionic generate page pages/perfil
+ionic generate page pages/crearlibro
+
+
+ionic generate service services/auth
+ionic generate service services/usuaris
+ionic generate service services/photo
+ionic generate service services/libros
+
+
+ionic generate interface models/IUser
+ionic generate interface models/ILibro
+
+
+npm i @capacitor/camera
+npm i @ionic/pwa-elements
+
+npm install @capacitor/google-maps
+npx cap sync
+npm install @capacitor/geolocation
+npx cap sync
+
+ionic generate component pages/mapa
+ionic generate service services/googlemaps
+
+
+------
+* para android studio
+ ionic cap add android **para crear la carpeta
+ ionic cap copy
+    ionic cap sync
+    ionic cap open android
+
+ o
+   npx cap sync
+    ionic capacitor run android -l --external

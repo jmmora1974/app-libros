@@ -1,0 +1,32 @@
+
+.map{
+    display: inline-block;
+    width: 300px;
+    height: 200px;
+}
+/*
+.miubicacion{
+    position: fixed;
+    bottom: 0px;
+    background: yellow;
+}
+
+.aceptar{
+    position: fixed;
+    top: 50px;
+    right: 5px;
+    background: green($color: #80eb85);
+}
+*/
+.search {
+    position: relative;
+    top: 45px;
+    left: 0px;
+}
+
+capacitor-google-map {
+    display: inline-block;
+    width: 275px;
+    height: 275px;
+    border: 1px solid rebeccapurple;
+  }

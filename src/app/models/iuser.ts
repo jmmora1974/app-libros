@@ -1,3 +1,5 @@
+import { LatLng } from "@capacitor/google-maps/dist/typings/definitions";
+
 export interface IEmailPwd {
     email: string;
     password: string;
@@ -10,11 +12,18 @@ export interface IUser  {
     cognom: string;
     email?: string;
     //password: string;
-    address?: string;
+    calle?: string;
+    numero?: number;
+    piso?: number;
+    puerta?: number;
+    ciudad?: string;
+    pais?: string;
+    ubicacion?: LatLng;
     phone?:number;
     imageUrl: string;
     avatar?: IUserAvatar;
     tokenPush: string;
+
 }
 export interface IUserAvatar {
     storagePath: string;

@@ -13,6 +13,7 @@ export const environment = {
     authDomain: 'app-libros-986e7.firebaseapp.com',
     messagingSenderId: '71001102642',
   },
+  googleApiKey: "AIzaSyBZDTQ4N0oN9lzp4A73V6cMj8qTU0Wzhjs",
   production: false
 };
 

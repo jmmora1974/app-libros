@@ -30,12 +30,40 @@
     </div>  
     <ion-item lines="full" class="item-has-focus ion-valid " >
       <label slot="start">Nom: </label>
-      <ion-input type="nom" placeholder="Nom" formControlName="nom" ></ion-input>
-     
+      <ion-input type="text" placeholder="Nom" formControlName="nom" ></ion-input>
     </ion-item> 
     <ion-item lines="full" class="item-has-focus ion-touched" >
       <label slot="start">Cognom: </label>
-      <ion-input type="cognom" placeholder="Cognom" formControlName="cognom"></ion-input>  
+      <ion-input type="text" placeholder="Cognom" formControlName="cognom"></ion-input>  
+    </ion-item>
+    <ion-item lines="full" class="item-has-focus ion-valid " style="width: 250px;">
+      <label slot="start">Calle: </label>
+      <ion-input type="text" placeholder="Calle" formControlName="calle" ></ion-input>
+    </ion-item>
+    <ion-items lines="full"  >
+       
+      <ion-item lines="full" class="item-has-focus " style="width: 250px;">
+            <label slot="start" style="width: 80px;" >Numero: </label>
+               <ion-input type="number" placeholder="Numero" formControlName="numero" style="width: 150px;" ></ion-input>
+       </ion-item>
+       <ion-item lines="full" class="item-has-focus " style="width: 150px;">
+               <label slot="start">Piso: </label>
+              <ion-input type="number" placeholder="Piso" formControlName="piso" ></ion-input>
+       </ion-item>
+
+        <ion-item lines="full" class="item-has-focus  " style="width: 150px;">
+            <label slot="start">Puerta: </label>
+               <ion-input type="number" placeholder="Puerta" formControlName="puerta" ></ion-input>
+        </ion-item>
+
+    </ion-items> 
+    <ion-item lines="full" class="item-has-focus ion-valid " style="width: 250px;">
+      <label slot="start">Ciudad: </label>
+      <ion-input type="text" placeholder="Ciudad" formControlName="ciudad" ></ion-input>
+    </ion-item>
+    <ion-item lines="full" class="item-has-focus ion-valid " style="width: 250px;">
+      <label slot="start">Pais: </label>
+      <ion-input type="text" placeholder="Pais" formControlName="pais" ></ion-input>
     </ion-item>
     <ion-item disabled="true" class="ion-hide">
       <ion-label position="floating"></ion-label>
@@ -53,6 +81,8 @@
 
   </ion-form>
   
+ 
+  <app-mapa></app-mapa>
   <ion-list>
     <ion-list-header>
       <ion-title><h2>Listado de mis libros</h2></ion-title>

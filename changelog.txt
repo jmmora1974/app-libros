@@ -33,3 +33,13 @@ master :
 		-PerfilPage: Se agrega listado de libros vendidos y comprados.
 	Servicios:
 		-LibroService: Agregados metodos para obtener libros vendidos y comprados.
+
+26/07/2003:
+	Paginas:
+	   	- Se crea MapaPage. Component modal app-mapa.>
+		-Se modifica perfilpage, se incorporan en el fomuralario datos  de direccion, ciudad, pais y ubicación (latlng)
+	Services:
+		-Se crea servicio googlemaps
+	Interface:
+		- Se agegan los campos direccion, ciudad, pais y ubicación (latlng)
+

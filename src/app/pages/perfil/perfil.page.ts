@@ -10,10 +10,11 @@ import { LibrosService } from 'src/app/services/libros.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { UsuarisService } from 'src/app/services/usuaris.service';
 
+
 import { ModalLibroPage } from './modal-libro/modal-libro.page';
 import { ILibro } from 'src/app/models/ilibro';
 import { error } from 'console';
-
+import { MapaComponent } from '../mapa/mapa.component';
 
 @Component({
   selector: 'app-perfil',
@@ -41,7 +42,8 @@ export class PerfilPage implements OnInit {
     public userService: UsuarisService,
     public librosService:LibrosService,
     private fb: FormBuilder,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private modalController:ModalController
   ) { 
     this.photoService.getUserProfile().subscribe((data) => {
       this.profile = data;
@@ -207,4 +209,5 @@ export class PerfilPage implements OnInit {
     
   }
 
+ 
 }
